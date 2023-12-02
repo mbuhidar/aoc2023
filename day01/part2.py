@@ -13,24 +13,35 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 def compute(s: str) -> int:
     sum = 0
     lines = s.splitlines()
+
+    num_hash = {"one": "o1e", "two": "t2o", "three": "th3ee", "four": "f4ur",
+                "five": "f5ve", "six": "s6x", "seven": "se7en",
+                "eight": "ei8ht", "nine": "n9ne"}
+
     for line in lines:
+        for key, value in num_hash.items():
+            line = line.replace(key, value)
         numbers = [num for num in line if num.isdigit()]
+
         if len(numbers) == 0:
             continue
         else:
-            line_sum = int(numbers[0] + numbers[-1])
+            line_sum = int(str(numbers[0]) + str(numbers[-1]))
             sum += line_sum
 
     return sum
 
-
 INPUT_S = '''
-1abc2
-pqr3stu8vwx
-a1b2c3d4e5f
-treb7uchet
+two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen
+1
 '''
-EXPECTED = 142
+EXPECTED = 292
 
 
 @pytest.mark.parametrize(
