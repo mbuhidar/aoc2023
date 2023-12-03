@@ -13,6 +13,7 @@ RED = 12
 BLUE = 14
 GREEN = 13
 
+
 def compute(s: str) -> int:
 
     game_total = 0
@@ -25,8 +26,6 @@ def compute(s: str) -> int:
 
         line = line.split(':', 1)[1].strip().replace(';', ',').split(',')
         line = [item.split() for item in line]
-        print(game_id)
-        print(line)
 
         for item in line:
             if item[1] == 'red':
@@ -65,7 +64,7 @@ def test(input_s: str, expected: int) -> None:
     assert compute(input_s) == expected
 
 
-def main() -> int:
+def main() -> int: 
     parser = argparse.ArgumentParser()
     parser.add_argument('data_file', nargs='?', default=INPUT_TXT)
     args = parser.parse_args()

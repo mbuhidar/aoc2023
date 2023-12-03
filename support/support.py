@@ -181,11 +181,11 @@ def parse_coords_int(s: str) -> dict[tuple[int, int], int]:
     return coords
 
 
-def parse_coords_hash(s: str) -> set[tuple[int, int]]:
+def parse_coords_hash(s: str, symbols: set[str]) -> set[tuple[int, int]]:
     coords = set()
     for y, line in enumerate(s.splitlines()):
         for x, c in enumerate(line):
-            if c == '#':
+            if c in symbols:
                 coords.add((x, y))
     return coords
 

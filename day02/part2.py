@@ -13,36 +13,6 @@ RED = 12
 BLUE = 14
 GREEN = 13
 
-def compute_part1(s: str) -> int:
-
-    game_total = 0
-
-    lines = s.splitlines()
-    for idx, line in enumerate(lines):
-
-        game_id = idx + 1
-        game_total += game_id
-
-        line = line.split(':', 1)[1].strip().replace(';', ',').split(',')
-        line = [item.split() for item in line]
-        print(game_id)
-        print(line)
-
-        for item in line:
-            if item[1] == 'red':
-                if int(item[0]) > RED:
-                    game_total -= game_id
-                    break
-            elif item[1] == 'blue':
-                if int(item[0]) > BLUE:
-                    game_total -= game_id
-                    break
-            elif item[1] == 'green':
-                if int(item[0]) > GREEN:
-                    game_total -= game_id
-                    break
-
-    return game_total
 
 def compute(s: str) -> int:
 
@@ -55,11 +25,12 @@ def compute(s: str) -> int:
         blue_count = 0
         green_count = 0
 
-        line = line.split(':', 1)[1].strip().replace(';', ',').split(',')
-        line = [item.split() for item in line]
-        print(line)
+        line_split: list[str] = line.split(
+            ':', 1,
+        )[1].strip().replace(';', ',').split(',')
+        line_splits: list[list[str]] = [item.split() for item in line_split]
 
-        for item in line:
+        for item in line_splits:
             if item[1] == 'red':
                 if int(item[0]) > red_count:
                     red_count = int(item[0])
@@ -69,7 +40,6 @@ def compute(s: str) -> int:
             elif item[1] == 'green':
                 if int(item[0]) > green_count:
                     green_count = int(item[0])
-        print(red_count, blue_count, green_count)
         power_total += red_count * blue_count * green_count
 
     return power_total
@@ -82,7 +52,7 @@ Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
 Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
 '''
-EXPECTED = 2286 
+EXPECTED = 2286
 
 
 @pytest.mark.parametrize(
