@@ -11,9 +11,9 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
 def compute(s: str) -> int:
-    seed_part, *parts = s.split('\n\n')
+    seeds, *parts = s.split('\n\n')
 
-    seeds = list(map(int, seed_part.split(':')[1].split()))
+    items = list(map(int, seeds.split(':')[1].split()))
 
     for part in parts:
         origin_to_dest_map = []
@@ -21,16 +21,16 @@ def compute(s: str) -> int:
             origin_to_dest_map.append(list(map(int, line.split())))
 
         new_destination = []
-        for item in seeds:
+        for item in items:
             for destination, source, range_length in origin_to_dest_map:
                 if item in range(source, source + range_length):
                     new_destination.append(item - source + destination)
                     break
             else:
                 new_destination.append(item)
-        seeds = new_destination
+        items = new_destination
 
-    return min(seeds)  # 111627841
+    return min(items)  # 111627841
 
 
 INPUT_S = '''\
