@@ -10,52 +10,27 @@ import support
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
-def sources_to_destinations(
-    sources: list[int],
-    source_to_dest_map: list[list[int]],
-) -> list[int]:
-    destinations = []
-    for source in sources:
-        for source_to_dest in source_to_dest_map:
-            if source in range(
-                source_to_dest[1], source_to_dest[1] +
-                source_to_dest[2],
-            ):
-                destination = source_to_dest[0] + source - source_to_dest[1]
-                break
-            else:
-                destination = source
-        destinations.append(destination)
-
-    return destinations
-
-
 def compute(s: str) -> int:
-    lines = s.splitlines()
-    seeds = [int(seed) for seed in lines[0].split()[1:]]
+    seed_part, *parts = s.split('\n\n')
 
-    seed_to_soil = [[int(x) for x in line.split()] for line in lines[3:17]]
-    soil_to_fertilizer = [[int(x) for x in line.split()]
-                          for line in lines[19:39]]
-    fertilizer_to_water = [[int(x) for x in line.split()]
-                           for line in lines[41:83]]
-    water_to_light = [[int(x) for x in line.split()] for line in lines[85:125]]
-    light_to_temperature = [[int(x) for x in line.split()]
-                            for line in lines[127:171]]
-    temperature_to_humidity = [[int(x) for x in line.split()]
-                               for line in lines[173:180]]
-    humidity_to_location = [[int(x) for x in line.split()]
-                            for line in lines[182:223]]
+    seeds = list(map(int, seed_part.split(':')[1].split()))
 
-    soils = sources_to_destinations(seeds, seed_to_soil)
-    fertilizers = sources_to_destinations(soils, soil_to_fertilizer)
-    waters = sources_to_destinations(fertilizers, fertilizer_to_water)
-    lights = sources_to_destinations(waters, water_to_light)
-    temperatures = sources_to_destinations(lights, light_to_temperature)
-    humidities = sources_to_destinations(temperatures, temperature_to_humidity)
-    locations = sources_to_destinations(humidities, humidity_to_location)
+    for part in parts:
+        origin_to_dest_map = []
+        for line in part.splitlines()[1:]:
+            origin_to_dest_map.append(list(map(int, line.split())))
 
-    return min(locations)
+        new_destination = []
+        for item in seeds:
+            for destination, source, range_length in origin_to_dest_map:
+                if item in range(source, source + range_length):
+                    new_destination.append(item - source + destination)
+                    break
+            else:
+                new_destination.append(item)
+        seeds = new_destination
+
+    return min(seeds)  # 111627841
 
 
 INPUT_S = '''\
